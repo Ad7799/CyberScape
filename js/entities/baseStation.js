@@ -1,63 +1,70 @@
+// Define a class representing a base station in the game
 class BaseStation {
+    // Constructor initializes a new base station with position and default properties
     constructor(x, y) {
-        this.x = x;
-        this.y = y;
-        this.width = 60;
-        this.height = 60;
-        this.color = '#00AA00'; // Green for base station
-        this.uploadProgress = 0;
-        this.uploadSpeed = 0.05; // 5% per frame when a shard is being uploaded
-        this.isUploading = false;
+        this.x = x;                    // X-coordinate of the base station's center
+        this.y = y;                    // Y-coordinate of the base station's center
+        this.width = 60;               // Width of the base station in pixels
+        this.height = 60;              // Height of the base station in pixels
+        this.color = '#00AA00';        // Green color for the base station
+        this.uploadProgress = 0;       // Initial upload progress (0-100)
+        this.uploadSpeed = 0.05;       // Upload speed: 5% per frame when normalized to 16ms
+        this.isUploading = false;      // Flag to track if the station is currently uploading
     }
     
+    // Update method called each frame to handle game logic
     update(deltaTime) {
-        // Update upload progress if uploading
+        // Only process upload logic if currently uploading
         if (this.isUploading) {
+            // Increase upload progress based on time elapsed (normalized to 16ms per frame)
             this.uploadProgress += this.uploadSpeed * deltaTime / 16;
             
+            // Check if upload is complete (reached 100%)
             if (this.uploadProgress >= 100) {
-                this.uploadProgress = 0;
-                this.isUploading = false;
-                return true; // Upload complete
+                this.uploadProgress = 0;       // Reset progress for future uploads
+                this.isUploading = false;      // Stop the uploading state
+                return true;                   // Return true to signal upload completion
             }
         }
         
-        return false;
+        return false;                          // Return false if upload is not complete
     }
     
+    // Render method to draw the base station on the canvas
     render(ctx) {
-        // Draw the base station
-        ctx.fillStyle = this.color;
+        // Draw the main body of the base station as a rectangle
+        ctx.fillStyle = this.color;            // Set the fill color to green
         ctx.fillRect(this.x - this.width / 2, this.y - this.height / 2, this.width, this.height);
         
-        // Draw antenna
-        ctx.strokeStyle = '#FFFFFF';
-        ctx.lineWidth = 3;
-        ctx.beginPath();
-        ctx.moveTo(this.x, this.y - this.height / 2);
-        ctx.lineTo(this.x, this.y - this.height / 2 - 20);
-        ctx.lineTo(this.x + 15, this.y - this.height / 2 - 35);
-        ctx.stroke();
+        // Draw an antenna on top of the base station
+        ctx.strokeStyle = '#FFFFFF';           // Set stroke color to white
+        ctx.lineWidth = 3;                     // Set line width to 3 pixels
+        ctx.beginPath();                       // Start a new path for drawing
+        ctx.moveTo(this.x, this.y - this.height / 2);             // Start at top center of station
+        ctx.lineTo(this.x, this.y - this.height / 2 - 20);        // Draw vertical line up
+        ctx.lineTo(this.x + 15, this.y - this.height / 2 - 35);   // Draw diagonal line for antenna
+        ctx.stroke();                          // Render the antenna path
         
-        // Draw upload progress bar if uploading
+        // Draw upload progress bar if the station is currently uploading
         if (this.isUploading) {
-            const barWidth = this.width - 10;
-            const barHeight = 8;
-            const barX = this.x - barWidth / 2;
-            const barY = this.y + this.height / 2 + 10;
+            const barWidth = this.width - 10;  // Progress bar width (slightly smaller than station)
+            const barHeight = 8;               // Progress bar height in pixels
+            const barX = this.x - barWidth / 2;// X position (centered below station)
+            const barY = this.y + this.height / 2 + 10; // Y position (below station)
             
-            // Background
-            ctx.fillStyle = '#333333';
+            // Draw progress bar background
+            ctx.fillStyle = '#333333';         // Dark gray background
             ctx.fillRect(barX, barY, barWidth, barHeight);
             
-            // Progress
-            ctx.fillStyle = '#00FF00';
-            ctx.fillRect(barX, barY, barWidth * (this.uploadProgress / 100), barHeight);
+            // Draw the actual progress indicator
+            ctx.fillStyle = '#00FF00';         // Bright green for progress
+            ctx.fillRect(barX, barY, barWidth * (this.uploadProgress / 100), barHeight); // Width based on progress percentage
         }
     }
     
+    // Method to initiate the upload process
     startUpload() {
-        this.isUploading = true;
-        this.uploadProgress = 0;
+        this.isUploading = true;       // Set uploading state to true
+        this.uploadProgress = 0;       // Reset progress to start from 0
     }
 }
