@@ -32,5 +32,5 @@ window.addEventListener('load', () => {
     window.game.start();
     
     // Show a welcome message to the player for 5 seconds
-    HUD.showMessage('Welcome to Data Shard Collection Game!', 5000);
+    HUD.showMessage('Welcome to CyberScape!', 5000);
 });
