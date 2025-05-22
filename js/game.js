@@ -197,6 +197,13 @@ class Game {
         if (e.key === 'Escape') {
             this.togglePause();
         }
+        
+        // Restart the game when R key is pressed and the game is over
+        if (e.key === 'r' || e.key === 'R') {
+            if (this.isGameOver) {
+                this.restart();
+            }
+        }
     }
     
     // Handle key release events

@@ -6,7 +6,7 @@ class CentralHub {
         this.y = y;                    // Y-coordinate of the hub's center
         this.width = 50;               // Width of the hub in pixels
         this.height = 50;              // Height of the hub in pixels
-        this.color = '#0000FF';        // Blue color for the central hub
+        this.color = '#000000';        // Black color for the central hub
         this.shards = [];              // Array to store data shards
         this.maxShards = 5;            // Maximum number of shards the hub can hold
         this.decryptionCooldown = 0;   // Timer to control decryption frequency (in milliseconds)

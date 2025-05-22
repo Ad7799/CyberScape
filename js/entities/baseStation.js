@@ -6,7 +6,7 @@ class BaseStation {
         this.y = y;                    // Y-coordinate of the base station's center
         this.width = 60;               // Width of the base station in pixels
         this.height = 60;              // Height of the base station in pixels
-        this.color = '#00AA00';        // Green color for the base station
+        this.color = '#0000FF';        // Blue color for the base station
         this.uploadProgress = 0;       // Initial upload progress (0-100)
         this.uploadSpeed = 0.05;       // Upload speed: 5% per frame when normalized to 16ms
         this.isUploading = false;      // Flag to track if the station is currently uploading
