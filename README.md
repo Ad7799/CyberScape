@@ -50,7 +50,7 @@ CyberScape is a web-based game that runs directly in the browser. The project st
 2. Use WASD or arrow keys to move
 3. Click to shoot at security towers
 4. Collect keys (yellow items)
-5. Visit the Central Hub (blue square) to decrypt shards
+5. Visit the Central Hub (black square) to decrypt shards
 6. Collect decrypted shards
-7. Deliver shards to the Base Station to restore system health
+7. Deliver shards to the Base Station (blue square) to restore system health
 8. Restore system health to 100% to win!
