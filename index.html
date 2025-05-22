@@ -1,47 +1,47 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CyberScape</title>
-    <link rel="stylesheet" href="css/style.css">
+<!DOCTYPE html>                                 <!-- HTML5 document type declaration -->
+<html lang="en">                                <!-- Root HTML element with English language specification -->
+<head>                                          <!-- Container for metadata and document information -->
+    <meta charset="UTF-8">                      <!-- Character encoding set to UTF-8 for international character support -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"> <!-- Responsive viewport settings for mobile devices -->
+    <title>CyberScape</title>                   <!-- Page title that appears in browser tab/window -->
+    <link rel="stylesheet" href="css/style.css"> <!-- Link to external CSS stylesheet for styling -->
 </head>
-<body>
-    <div id="game-container">
-        <canvas id="gameCanvas"></canvas>
-        <div id="ui-overlay">
-            <div id="health-bar">
-                <div>Player Health: <span id="player-health">100</span>%</div>
-                <div>System Health: <span id="system-health">50</span>%</div>
+<body>                                          <!-- Container for all visible content -->
+    <div id="game-container">                   <!-- Main container for the game elements -->
+        <canvas id="gameCanvas"></canvas>       <!-- HTML5 canvas element where the game will be rendered -->
+        <div id="ui-overlay">                   <!-- Container for UI elements that overlay the game canvas -->
+            <div id="health-bar">               <!-- Container for health-related information -->
+                <div>Player Health: <span id="player-health">100</span>%</div> <!-- Player health display with initial value -->
+                <div>System Health: <span id="system-health">50</span>%</div>  <!-- System health display with initial value -->
             </div>
-            <div id="inventory">
-                <div>Keys: <span id="key-count">0</span></div>
-                <div>Shards: <span id="shard-count">0</span></div>
+            <div id="inventory">                <!-- Container for inventory-related information -->
+                <div>Keys: <span id="key-count">0</span></div>      <!-- Key count display with initial value -->
+                <div>Shards: <span id="shard-count">0</span></div>  <!-- Shard count display with initial value -->
             </div>
         </div>
-        <div id="menu" class="hidden">
-            <h2>Game Menu</h2>
-            <button id="resume-btn">Resume</button>
-            <button id="restart-btn">Restart</button>
+        <div id="menu" class="hidden">          <!-- Game menu container (initially hidden) -->
+            <h2>Game Menu</h2>                  <!-- Menu title -->
+            <button id="resume-btn">Resume</button>    <!-- Button to resume the game -->
+            <button id="restart-btn">Restart</button>  <!-- Button to restart the game -->
         </div>
     </div>
 
-    <!-- Load JavaScript files -->
-    <script src="js/utils/collision.js"></script>
-    <script src="js/utils/physics.js"></script>
-    <script src="js/utils/storage.js"></script>
-    <script src="js/map/generator.js"></script>
-    <script src="js/map/renderer.js"></script>
-    <script src="js/entities/tower.js"></script>
-    <script src="js/entities/shard.js"></script>
-    <script src="js/entities/key.js"></script>
-    <script src="js/entities/bullet.js"></script>
-    <script src="js/entities/centralHub.js"></script>
-    <script src="js/entities/baseStation.js"></script>
-    <script src="js/ui/hud.js"></script>
-    <script src="js/ui/menu.js"></script>
-    <script src="js/player.js"></script>
-    <script src="js/game.js"></script>
-    <script src="js/main.js"></script>
+    <!-- Load JavaScript files -->             <!-- Comment indicating the start of script imports -->
+    <script src="js/utils/collision.js"></script>      <!-- Utility script for collision detection -->
+    <script src="js/utils/physics.js"></script>        <!-- Utility script for physics calculations -->
+    <script src="js/utils/storage.js"></script>        <!-- Utility script for local storage operations -->
+    <script src="js/map/generator.js"></script>        <!-- Script for procedural map generation -->
+    <script src="js/map/renderer.js"></script>         <!-- Script for rendering the game map -->
+    <script src="js/entities/tower.js"></script>       <!-- Script for tower enemy entities -->
+    <script src="js/entities/shard.js"></script>       <!-- Script for collectible shard entities -->
+    <script src="js/entities/key.js"></script>         <!-- Script for collectible key entities -->
+    <script src="js/entities/bullet.js"></script>      <!-- Script for projectile entities -->
+    <script src="js/entities/centralHub.js"></script>  <!-- Script for the central hub location -->
+    <script src="js/entities/baseStation.js"></script> <!-- Script for the base station location -->
+    <script src="js/ui/hud.js"></script>               <!-- Script for heads-up display management -->
+    <script src="js/ui/menu.js"></script>              <!-- Script for menu system management -->
+    <script src="js/player.js"></script>               <!-- Script for player character functionality -->
+    <script src="js/game.js"></script>                 <!-- Main game logic script -->
+    <script src="js/main.js"></script>                 <!-- Entry point script that initializes the game -->
 </body>
 </html>
