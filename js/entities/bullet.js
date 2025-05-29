@@ -1,7 +1,7 @@
 // Define a class representing a bullet projectile in the game
 class Bullet {
     // Constructor initializes a new bullet with position and direction vectors
-    constructor(x, y, dirX, dirY) {
+    constructor(x, y, dirX, dirY, isPlayerBullet = false, damage = 25) {
         this.x = x;                // X-coordinate of the bullet's position
         this.y = y;                // Y-coordinate of the bullet's position
         this.width = 5;            // Width of the bullet in pixels
@@ -9,10 +9,11 @@ class Bullet {
         this.dirX = dirX;          // X component of direction vector (normalized)
         this.dirY = dirY;          // Y component of direction vector (normalized)
         this.speed = 10;           // Movement speed in pixels per frame
-        this.damage = 25;          // Damage value when hitting an entity
+        this.damage = damage; // Use the passed damage value
         this.bounces = 0;          // Counter for number of wall bounces
         this.maxBounces = 3;       // Maximum number of bounces before bullet disappears
         this.color = '#FFFFFF';    // White color for the bullet
+        this.isPlayerBullet = isPlayerBullet; // Flag to indicate if the bullet was shot by the player
     }
     
     // Update method called each frame to handle bullet movement and collisions

@@ -87,14 +87,15 @@ class Player {
         // Calculate direction vector from player to target
         const dx = targetX - this.x;          // X component of direction vector
         const dy = targetY - this.y;          // Y component of direction vector
-        
+
         // Normalize the direction vector to get a unit vector
         const length = Math.sqrt(dx * dx + dy * dy); // Calculate vector length
         const dirX = dx / length;             // Normalized X direction
         const dirY = dy / length;             // Normalized Y direction
-        
+
         // Create a new bullet and add it to the game's bullet array
-        const bullet = new Bullet(this.x, this.y, dirX, dirY); // Create bullet at player position with calculated direction
+        // Pass true for isPlayerBullet
+        const bullet = new Bullet(this.x, this.y, dirX, dirY, true); // Create bullet at player position with calculated direction
         bulletArray.push(bullet);             // Add bullet to the game's bullet array
     }
 }

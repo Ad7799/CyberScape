@@ -11,7 +11,8 @@ class Game {
             keys: [],                                           // Array of collectible keys
             shards: [],                                         // Array of data shards
             bullets: [],                                        // Array of projectiles
-            powerUps: []                                         // Array of power-ups
+            powerUps: [],                                       // Array of power-ups
+            bots: []                                            // Array of enemy bots
         };
         this.centralHub = null;                                 // Central hub for decrypting shards (initialized later)
         this.baseStation = null;                                // Base station for delivering shards (initialized later)
@@ -90,27 +91,69 @@ class Game {
             }
         });
         
-        // Update each bullet and check for collisions
-        this.entities.bullets.forEach((bullet, index) => {
+        // Update each bot
+        this.entities.bots.forEach(bot => {
+            bot.update(deltaTime, this.player, this.map);
+            // Check if the bot shoots and add the bullet to the game
+            const bullet = bot.shoot(this.player);
+            if (bullet) {
+                this.entities.bullets.push(bullet);
+            }
+        });
+        
+        // Check for collisions between bullets and entities (towers, bots, player)
+        this.entities.bullets.forEach((bullet, bulletIndex) => {
             bullet.update(deltaTime, this.map);
-            
-            // Check for collisions between bullets and towers
+
+            let hit = false;
+
+            // Check for collisions between player bullets and bots
+            if (bullet.isPlayerBullet) {
+                this.entities.bots.forEach((bot, botIndex) => {
+                    if (Collision.checkCollision(bullet, bot)) {
+                        const botDestroyed = bot.takeDamage(bullet.damage);
+                        this.entities.bullets.splice(bulletIndex, 1); // Remove the bullet
+                        if (botDestroyed) {
+                            this.entities.bots.splice(botIndex, 1); // Remove the bot if destroyed
+                        }
+                        hit = true;
+                        return; // Stop checking collisions for this bullet against bots
+                    }
+                });
+            }
+
+            if (hit) return; // If the bullet hit a bot, move to the next bullet
+
+            // Check for collisions between bullets and towers (assuming towers are only hit by player bullets or specific bot bullets)
+            // You might want to add logic here to check if the bullet is allowed to damage towers
             this.entities.towers.forEach((tower, towerIndex) => {
-                if (Collision.checkCollision(bullet, tower)) {
+                 // Assuming only player bullets damage towers for now
+                if (bullet.isPlayerBullet && Collision.checkCollision(bullet, tower)) {
                     tower.takeDamage(bullet.damage);           // Apply damage to tower
-                    this.entities.bullets.splice(index, 1);    // Remove the bullet
-                    
+                    this.entities.bullets.splice(bulletIndex, 1);    // Remove the bullet
                     // Remove tower if its health reaches zero
                     if (tower.health <= 0) {
                         this.entities.towers.splice(towerIndex, 1);
                     }
-                    return;
+                    hit = true;
+                    return; // Stop checking collisions for this bullet against towers
                 }
             });
-            
+
+            if (hit) return; // If the bullet hit a tower, move to the next bullet
+
+            // Check for collisions between bot bullets and the player
+            if (!bullet.isPlayerBullet && Collision.checkCollision(bullet, this.player)) {
+                this.player.takeDamage(bullet.damage);
+                this.entities.bullets.splice(bulletIndex, 1);
+                hit = true;
+                return; // Stop checking collisions for this bullet
+            }
+
+
             // Remove bullets that have expired (no speed or max bounces reached)
             if (bullet.speed <= 0 || bullet.bounces >= bullet.maxBounces) {
-                this.entities.bullets.splice(index, 1);
+                this.entities.bullets.splice(bulletIndex, 1);
             }
         });
         
@@ -125,14 +168,14 @@ class Game {
             }
         });
 
-        // Update and check for collisions with power-ups
+        // Check if player has collected any power-ups
         this.entities.powerUps.forEach((powerUp, index) => {
             if (Collision.checkCollision(this.player, powerUp)) {
-                powerUp.applyEffect(this.player);              // Apply the power-up's effect
+                powerUp.applyEffect(this.player);              // Apply power-up effect to player
                 this.entities.powerUps.splice(index, 1);       // Remove the collected power-up
             }
         });
-        
+
         // Handle central hub interaction when player is inside
         if (this.centralHub.isPlayerInside(this.player)) {
             // Update the central hub's internal state
@@ -186,6 +229,7 @@ class Game {
         this.entities.keys.forEach(key => key.render(this.ctx));
         this.entities.bullets.forEach(bullet => bullet.render(this.ctx));
         this.entities.powerUps.forEach(powerUp => powerUp.render(this.ctx)); // Draw power-ups
+        this.entities.bots.forEach(bot => bot.render(this.ctx)); // Draw bots
         
         // Draw the player character
         this.player.render(this.ctx);
@@ -258,7 +302,9 @@ class Game {
             towers: [],
             keys: [],
             shards: [],
-            bullets: []
+            bullets: [],
+            powerUps: [], // Ensure powerUps are cleared on restart
+            bots: []      // Clear the bots array on restart
         };
         this.systemHealth = 50;                                // Reset system health to 50%
         this.isGameOver = false;                               // Clear game over flag

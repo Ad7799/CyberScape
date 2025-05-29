@@ -2,6 +2,7 @@ class HackerMode {
     static isEnabled = false;
     static gameRef = null;
     static powerUpInterval = null;
+    static botInterval = null; // Add interval for bot generation
 
     static init(game) {
         this.gameRef = game;
@@ -19,9 +20,11 @@ class HackerMode {
             HUD.showMessage('Hacker Mode Enabled! Prepare for chaos!', 3000);
             
             this.startPowerUpGeneration();
+            this.startBotGeneration(); // Start bot generation
         } else {
             HUD.showMessage('Hacker Mode Disabled.', 3000);
             this.stopPowerUpGeneration();
+            this.stopBotGeneration(); // Stop bot generation
         }
         // Optionally, update button text or appearance
         const hackerModeBtn = document.getElementById('hacker-mode-btn');
@@ -78,7 +81,59 @@ class HackerMode {
                 if (index > -1) {
                     this.gameRef.entities.powerUps.splice(index, 1);
                 }
-            }, 10000);
+            }, 7000);
+        }
+    }
+
+    // New method to start bot generation
+    static startBotGeneration() {
+        if (this.botInterval) {
+            clearInterval(this.botInterval);
+        }
+        // Generate a bot every 10-20 seconds
+        this.botInterval = setInterval(() => {
+            if (this.isEnabled && !this.gameRef.isPaused && !this.gameRef.isGameOver) {
+                this.generateRandomBot();
+            }
+        }, 15000); // a random bot appears every 7 seconds
+    }
+
+    // New method to stop bot generation
+    static stopBotGeneration() {
+        if (this.botInterval) {
+            clearInterval(this.botInterval);
+            this.botInterval = null;
+        }
+    }
+
+    // New method to generate a random bot
+    static generateRandomBot() {
+        const botTypes = ['light', 'heavy', 'sniper'];
+        const randomType = botTypes[Math.floor(Math.random() * botTypes.length)];
+
+        // Find a valid position on the map (e.g., not inside a building)
+        let x, y;
+        do {
+            x = Math.floor(Math.random() * this.gameRef.canvas.width);
+            y = Math.floor(Math.random() * this.gameRef.canvas.height);
+        } while (!MapGenerator.isWalkable(this.gameRef.map, x, y)); // Assuming MapGenerator has an isWalkable method
+
+        let bot = null;
+        switch (randomType) {
+            case 'light':
+                bot = new LightBot(x, y);
+                break;
+            case 'heavy':
+                bot = new HeavyBot(x, y);
+                break;
+            case 'sniper':
+                bot = new SniperBot(x, y);
+                break;
+        }
+
+        if (bot) {
+            this.gameRef.entities.bots.push(bot);
+            HUD.showMessage(`A ${randomType} bot appeared!`, 2000);
         }
     }
 }
