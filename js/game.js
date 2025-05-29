@@ -10,7 +10,8 @@ class Game {
             towers: [],                                         // Array of security towers
             keys: [],                                           // Array of collectible keys
             shards: [],                                         // Array of data shards
-            bullets: []                                         // Array of projectiles
+            bullets: [],                                        // Array of projectiles
+            powerUps: []                                         // Array of power-ups
         };
         this.centralHub = null;                                 // Central hub for decrypting shards (initialized later)
         this.baseStation = null;                                // Base station for delivering shards (initialized later)
@@ -123,6 +124,14 @@ class Game {
                 this.generateKeys(1);
             }
         });
+
+        // Update and check for collisions with power-ups
+        this.entities.powerUps.forEach((powerUp, index) => {
+            if (Collision.checkCollision(this.player, powerUp)) {
+                powerUp.applyEffect(this.player);              // Apply the power-up's effect
+                this.entities.powerUps.splice(index, 1);       // Remove the collected power-up
+            }
+        });
         
         // Handle central hub interaction when player is inside
         if (this.centralHub.isPlayerInside(this.player)) {
@@ -176,6 +185,7 @@ class Game {
         this.entities.towers.forEach(tower => tower.render(this.ctx));
         this.entities.keys.forEach(key => key.render(this.ctx));
         this.entities.bullets.forEach(bullet => bullet.render(this.ctx));
+        this.entities.powerUps.forEach(powerUp => powerUp.render(this.ctx)); // Draw power-ups
         
         // Draw the player character
         this.player.render(this.ctx);

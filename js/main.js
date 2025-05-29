@@ -8,6 +8,8 @@ window.addEventListener('load', () => {
     
     // Initialize the menu system with a reference to the game instance
     Menu.init(window.game);
+
+    HackerMode.init(window.game);
     
     // Add event listeners to handle user input
     window.addEventListener('keydown', (e) => window.game.handleKeyDown(e));  // Handle key press events

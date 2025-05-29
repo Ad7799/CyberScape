@@ -11,6 +11,7 @@ class Player {
         this.keys = 0;                 // Number of keys collected (used for decryption)
         this.shards = 0;               // Number of data shards collected (used to restore system)
         this.color = '#00FFFF';        // Cyan color for player representation
+        this.isInvisible = false;      // Flag to indicate if player is currently invisible (power-up effect)
     }
     
     // Update method called each frame to handle player movement
@@ -55,6 +56,7 @@ class Player {
     
     // Method to reduce player's health when damaged
     takeDamage(amount) {
+        if(this.isInvisible) return;           // Ignore damage if player is invisible (power-up effect)
         this.health = Math.max(0, this.health - amount); // Reduce health but not below zero
     }
     
