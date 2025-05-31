@@ -42,26 +42,24 @@ class Bot {
 
     update(player, map) {
         // Bot AI logic: patrol, detect, chase, shoot
-        if (this.isChasing) {
-            this.chasePlayer(player, map);
-        } else {
-            this.patrol(map);
-        }
+        const playerDetected = this.isPlayerDetected(player);
+        const playerInShootingRange = this.isPlayerInShootingRange(player);
 
-        if (this.isPlayerDetected(player)) {
+        if (playerDetected) {
             this.isChasing = true;
-        } else if (this.isChasing) {
-            this.isChasing = false;
-        }
-
-        if (this.isPlayerInShootingRange(player) && this.isChasing) { // Only shoot if chasing and in range
-            const bullet = this.shoot(player);
-            if (bullet) {
-                // Assuming 'game' is accessible globally or passed around
-                // You might need to add bullets to a global bullets array in game.js
-                // For now, just return the bullet, and game.js will handle adding it.
-                // Example: game.addBullet(bullet);
+            this.chasePlayer(player, map);
+            if (playerInShootingRange) {
+                const bullet = this.shoot(player);
+                if (bullet) {
+                    // Assuming 'game' is accessible globally or passed around
+                    // You might need to add bullets to a global bullets array in game.js
+                    // For now, just return the bullet, and game.js will handle adding it.
+                    // Example: game.addBullet(bullet);
+                }
             }
+        } else {
+            this.isChasing = false;
+            this.patrol(map);
         }
     }
 

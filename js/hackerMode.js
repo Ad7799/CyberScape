@@ -85,20 +85,18 @@ class HackerMode {
         }
     }
 
-    // New method to start bot generation
     static startBotGeneration() {
         if (this.botInterval) {
             clearInterval(this.botInterval);
         }
-        // Generate a bot every 10-20 seconds
+        // Generate a bot every 10 seconds
         this.botInterval = setInterval(() => {
             if (this.isEnabled && !this.gameRef.isPaused && !this.gameRef.isGameOver) {
                 this.generateRandomBot();
             }
-        }, 15000); // a random bot appears every 7 seconds
+        }, 15000); // Changed to 10 seconds (10000 ms)
     }
 
-    // New method to stop bot generation
     static stopBotGeneration() {
         if (this.botInterval) {
             clearInterval(this.botInterval);
@@ -106,7 +104,6 @@ class HackerMode {
         }
     }
 
-    // New method to generate a random bot
     static generateRandomBot() {
         const botTypes = ['light', 'heavy', 'sniper'];
         const randomType = botTypes[Math.floor(Math.random() * botTypes.length)];
@@ -116,7 +113,15 @@ class HackerMode {
         do {
             x = Math.floor(Math.random() * this.gameRef.canvas.width);
             y = Math.floor(Math.random() * this.gameRef.canvas.height);
-        } while (!MapGenerator.isWalkable(this.gameRef.map, x, y)); // Assuming MapGenerator has an isWalkable method
+        } while (!MapGenerator.isWalkable(this.gameRef.map, x, y));
+
+        // Define some simple patrol routes. These could be more complex or generated dynamically.
+        const patrolRoutes = [
+            [{ x: x + 50, y: y }, { x: x + 50, y: y + 50 }, { x: x, y: y + 50 }, { x: x, y: y }], // Square
+            [{ x: x + 100, y: y }, { x: x, y: y }], // Horizontal line
+            [{ x: x, y: y + 100 }, { x: x, y: y }]  // Vertical line
+        ];
+        const randomPatrolRoute = patrolRoutes[Math.floor(Math.random() * patrolRoutes.length)];
 
         let bot = null;
         switch (randomType) {
@@ -132,6 +137,7 @@ class HackerMode {
         }
 
         if (bot) {
+            bot.patrolRoute = randomPatrolRoute; // Assign the patrol route
             this.gameRef.entities.bots.push(bot);
             HUD.showMessage(`A ${randomType} bot appeared!`, 2000);
         }

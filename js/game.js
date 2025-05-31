@@ -16,7 +16,7 @@ class Game {
         };
         this.centralHub = null;                                 // Central hub for decrypting shards (initialized later)
         this.baseStation = null;                                // Base station for delivering shards (initialized later)
-        this.systemHealth = 50;                                 // Starting system health at 50%
+        this.systemHealth = 90;                                 // Starting system health at 90%
         this.isGameOver = false;                                // Flag to track game over state
         this.isPaused = false;                                  // Flag to track pause state
         this.keysPressed = {};                                  // Object to track currently pressed keys
