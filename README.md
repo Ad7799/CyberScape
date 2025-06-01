@@ -82,6 +82,18 @@ The game is built using vanilla JavaScript and HTML5 Canvas for rendering. The c
 ## Development
 CyberScape is a web-based game that runs directly in the browser. The project structure follows a modular approach with separate JavaScript files for different game components.
 
+### Installation
+
+1. Clone the repository:
+    ```bash
+    git clone https://github.com/adarshhinsodiya/CyberScape.git
+    ```
+2. Open the project directory:
+    ```bash
+    cd CyberScape
+    ```
+3. Open `index.html` in your browser.
+
 ## How to Play
 1. Open index.html in a modern web browser
 2. Use WASD or arrow keys to move
